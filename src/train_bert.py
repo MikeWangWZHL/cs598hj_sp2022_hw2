@@ -148,10 +148,10 @@ def main(config):
     device = torch.device(config['device'])
     
     # paths
-    ann_path_train = "/shared/nas/data/m1/wangz3/cs598hj_sp2022/assignment2/SEMEVAL-2021-task6-corpus/data/training_set_task1.txt"
-    ann_path_dev = "/shared/nas/data/m1/wangz3/cs598hj_sp2022/assignment2/SEMEVAL-2021-task6-corpus/data/dev_set_task1.txt"
-    ann_path_test = "/shared/nas/data/m1/wangz3/cs598hj_sp2022/assignment2/SEMEVAL-2021-task6-corpus/data/test_set_task1.txt"
-    techniques_list_task1_path = '/shared/nas/data/m1/wangz3/cs598hj_sp2022/assignment2/SEMEVAL-2021-task6-corpus/techniques_list_task1-2.txt'
+    ann_path_train = "../SEMEVAL-2021-task6-corpus/data/training_set_task1.txt"
+    ann_path_dev = "../SEMEVAL-2021-task6-corpus/data/dev_set_task1.txt"
+    ann_path_test = "../SEMEVAL-2021-task6-corpus/data/test_set_task1.txt"
+    techniques_list_task1_path = '../SEMEVAL-2021-task6-corpus/techniques_list_task1-2.txt'
 
     # set up tokenizer
     tokenizer = BertTokenizer.from_pretrained("bert-base-uncased")
@@ -251,14 +251,14 @@ def main(config):
         return None,None,None,None
 
 def random_baseline_score():
-    ann_path_train = "/shared/nas/data/m1/wangz3/cs598hj_sp2022/assignment2/SEMEVAL-2021-task6-corpus/data/training_set_task1.txt"
-    ann_path_dev = "/shared/nas/data/m1/wangz3/cs598hj_sp2022/assignment2/SEMEVAL-2021-task6-corpus/data/dev_set_task1.txt"
-    ann_path_test = "/shared/nas/data/m1/wangz3/cs598hj_sp2022/assignment2/SEMEVAL-2021-task6-corpus/data/test_set_task1.txt"
-    techniques_list_task1_path = '/shared/nas/data/m1/wangz3/cs598hj_sp2022/assignment2/SEMEVAL-2021-task6-corpus/techniques_list_task1-2.txt'
+    ann_path_train = "../SEMEVAL-2021-task6-corpus/data/training_set_task1.txt"
+    ann_path_dev = "../SEMEVAL-2021-task6-corpus/data/dev_set_task1.txt"
+    ann_path_test = "../SEMEVAL-2021-task6-corpus/data/test_set_task1.txt"
+    techniques_list_task1_path = '../SEMEVAL-2021-task6-corpus/techniques_list_task1-2.txt'
     CLASSES = read_classes(techniques_list_task1_path)
     
-    dev_prediction_path = '/shared/nas/data/m1/wangz3/cs598hj_sp2022/assignment2/SEMEVAL-2021-task6-corpus/baselines/baseline-output-task1-random-dev.txt'
-    test_prediction_path = '/shared/nas/data/m1/wangz3/cs598hj_sp2022/assignment2/SEMEVAL-2021-task6-corpus/baselines/baseline-output-task1-random-test.txt'
+    dev_prediction_path = '../SEMEVAL-2021-task6-corpus/baselines/baseline-output-task1-random-dev.txt'
+    test_prediction_path = '../SEMEVAL-2021-task6-corpus/baselines/baseline-output-task1-random-test.txt'
     
     dev_macro_f1, dev_micro_f1 = evaluate_pred_file(dev_prediction_path,ann_path_dev,CLASSES)
     print(f'dev score:\n\tmacro_f1:{dev_macro_f1}, micro_f1:{dev_micro_f1}')
@@ -270,13 +270,13 @@ def random_baseline_score():
 if __name__ == '__main__':
     '''run bert'''
     phase = 'train' # train
-    # phase = 'search_threshold' # evaluate
+    # phase = 'search_threshold' # perform hyper-parameter search on the best threshold on dev set
     if phase == 'train':
         config = {
             "add_symbolic_features":True,
             "evaluate":False,
             "batch_size":32,
-            "device":'cuda:2',
+            "device":'cuda',
             "output_dir":"../output/train/b_32_add_symbolic",
             "checkpoint":None,
             "lr":0.01,
@@ -299,7 +299,7 @@ if __name__ == '__main__':
                 "batch_size":32,
                 "device":'cuda:2',
                 "output_dir":"../output/evaluate/b_32_add_symbolic",
-                "checkpoint":'/shared/nas/data/m1/wangz3/cs598hj_sp2022/assignment2/output/train/b_32_add_symbolic/checkpoint_best.pt',
+                "checkpoint":'../output/train/b_32_add_symbolic/checkpoint_best.pt',
                 "lr":0.01,
                 "epoch":10,
                 "add_pos_weight":False,
@@ -313,7 +313,7 @@ if __name__ == '__main__':
 
     '''evaluation'''
     # checkpoint = '<checkpoint_path>'
-    # t = 0.263
+    # t = <best_threshold>
     # print(f'running threshold:{t}')
     # config = {
     #     "add_symbolic_features":True,
